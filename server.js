@@ -1,19 +1,20 @@
 const express = require("express");
-const { handleSignUp, handleSignIn } = require("./controller");
-const admin = require("firebase-admin");
+const {
+  handleSignUp,
+  handleSignIn,
+  handleTodo,
+  handleGetTodo,
+} = require("./controller");
+
 const app = express();
-
-const serviceAccount = require("./firebase-admin.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/signup", handleSignUp);
 app.post("/login", handleSignIn);
+app.post("/add-todo", handleTodo);
+app.get("/get-todos/:userId", handleGetTodo);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
